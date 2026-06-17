@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+
 using namespace std;
 
-void readFile(const string& path) {
+string readFile(const string& path) {
     ifstream file(path, ios::binary);
     char ch;
     while (file.get(ch)) {
