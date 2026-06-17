@@ -9,5 +9,5 @@ void readFile(const string& path) {
         cout << ch;
     }
     cout << endl;
-    file.close;
+    file.close();
 }
