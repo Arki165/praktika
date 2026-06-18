@@ -33,5 +33,9 @@ string readKey(const string& path) {
 }
 
 unsigned char encryptXOR(unsigned char textByte, unsigned char key) {
+    return textByte ^ key;
+}
 
+unsigned char encryptXNOR(unsigned char textByte, unsigned char key) {
+    return ~(textByte ^ key);
 }
