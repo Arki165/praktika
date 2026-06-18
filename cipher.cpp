@@ -16,19 +16,19 @@ string readFile(const string& path) {
     return content;
 }
 
-unsigned char readKey(const string& path) {
+string readKey(const string& path) {
     ifstream file(path); //здесь не нужно считываение в бинарном режиме, у нас ключ подается изначально как набор 0 и 1
     if (!file.is_open()) {
         throw runtime_error("Не удалось открыть файл: " + path);
     }
     string bits;
     file >> bits;
-    if (bits.size != 8) {
+    if (bits.size() != 8) {
         throw runtime_error("Ключ должен быть 8 бит!");
     }
     unsigned char res = (unsigned char)stoi(bits, nullptr, 2);
     file.close();
-    return res;
+    return string(1, res);
 
 }
 
