@@ -18,6 +18,8 @@ unsigned char encryptXNOR(unsigned char textByte, unsigned char key);
 //конец функций шифрования
 
 int main(int argc, char* argv[]){
+    system("chcp 1251 > nul"); //кодировка в консоли
+    system("cls");
     setlocale(LC_ALL, "Russian");
     
     if (argc ==1){
