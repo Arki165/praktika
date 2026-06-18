@@ -5,8 +5,9 @@
 
 using namespace std;
 
+//функция чтения из оригинального файла
 string readFile(const string& path) {
-    ifstream file(path, ios::binary); //открываем файлы в бинарном режиме, чтобы ничего не сломалось
+    ifstream file(path, ios::binary); //открываем файлы в бинарном режиме, чтобы система не пыталась исправить
     if (!file.is_open()) {
         cout << "Не удалось открыть файл с исходным текстом!";
         exit(1);
@@ -18,7 +19,24 @@ string readFile(const string& path) {
     return content;
 }
 
-//функция записи
+ //функция чтения ключа из файла
+string readKey(const string& path) {
+    ifstream file(path); //здесь не нужно считываение в бинарном режиме, у нас ключ подается изначально как набор 0 и 1
+    if (!file.is_open()) {
+        cout << "Не удалось открыть файл с ключом!";
+        exit(1);
+    }
+    string bits;
+    file >> bits;
+    if (bits.size() != 8) {
+        cout << "Ошибка: Ключ должен быть 8 бит!\n";
+        exit(1);
+    }
+    file.close();
+    return bits;
+}
+
+//функция записи в файл
 void writeFile(const string& path, const string& data){
     ofstream file(path, ios::binary);
     if (!file.is_open()){
@@ -29,27 +47,12 @@ void writeFile(const string& path, const string& data){
     file.close();
 }
 
-string readKey(const string& path) {
-    ifstream file(path); //здесь не нужно считываение в бинарном режиме, у нас ключ подается изначально как набор 0 и 1
-    if (!file.is_open()) {
-        cout << "Не удалось открыть файл с ключом!";
-        exit(1);
-    }
-    string bits;
-    file >> bits;
-    if (bits.size() != 8) {
-        throw runtime_error("Ключ должен быть 8 бит!");
-    }
-    unsigned char res = (unsigned char)stoi(bits, nullptr, 2);
-    file.close();
-    return bits;
-
-}
-
+//функция метода кодировки xor
 unsigned char encryptXOR(unsigned char textByte, unsigned char key) {
     return textByte ^ key;
 }
 
+//функция метода кодировки xnor
 unsigned char encryptXNOR(unsigned char textByte, unsigned char key) {
     return ~(textByte ^ key);
 }
