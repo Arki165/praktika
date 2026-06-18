@@ -16,7 +16,7 @@ string readFile(const string& path) {
     return content;
 }
 
-string readKey(const string& path) {
+unsigned char readKey(const string& path) {
     ifstream file(path); //здесь не нужно считываение в бинарном режиме, у нас ключ подается изначально как набор 0 и 1
     if (!file.is_open()) {
         throw runtime_error("Не удалось открыть файл: " + path);
