@@ -5,9 +5,10 @@
 
 using namespace std;
 
-//функция чтения из оригинального файла
+//функция чтения текстового файла
 string readFile(const string& path) {
-    ifstream file(path, ios::binary); //открываем файлы в бинарном режиме, чтобы система не пыталась исправить
+    ifstream file(path, ios::binary); //открываем файлы в бинарном режиме, 
+                                      //чтобы ничего не сломалось
     if (!file.is_open()) {
         cout << "Не удалось открыть файл с исходным текстом!";
         exit(1);
@@ -28,8 +29,9 @@ string readKey(const string& path) {
     }
     string bits;
     file >> bits;
+    //ключ в файле должен быть строго равен 8 бит, по этому проверка
     if (bits.size() != 8) {
-        cout << "Ошибка: Ключ должен быть 8 бит!\n";
+        cout << "Ключ должен быть 8 бит!";
         exit(1);
     }
     file.close();
@@ -38,7 +40,7 @@ string readKey(const string& path) {
 
 //функция записи в файл
 void writeFile(const string& path, const string& data){
-    ofstream file(path, ios::binary);
+    ofstream file(path, ios::binary); //аналогично, только с записью
     if (!file.is_open()){
         cout << "Не удалось создать файл для сохранения!";
         exit(1);
