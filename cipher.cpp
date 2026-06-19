@@ -27,6 +27,11 @@ string readKey(const string& path) {
         cout << "Не удалось открыть файл с ключом!";
         exit(1);
     }
+    for (int i; i<bits.size; i++) {
+        if (bits[i] != '0' && bits[i] != '1') {
+            cout << "Ключ содержит недопустимые символы!";
+        }
+    }
     string bits;
     file >> bits;
     //ключ в файле должен быть строго равен 8 бит, по этому проверка
@@ -47,6 +52,18 @@ void writeFile(const string& path, const string& data){
     }
     file << data;
     file.close();
+}
+
+//функция генерации ключа
+string generateKey (int lengh) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dist(0,1);
+    string key = "";
+    for (int i = 0; i <lengh; i++) {
+        key += (dist(gen) == 0) ? '0' : '1';
+    }
+    return key;
 }
 
 //функция метода кодировки xor
