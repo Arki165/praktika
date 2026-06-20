@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <random>
 
 using namespace std;
 
@@ -27,16 +28,17 @@ string readKey(const string& path) {
         cout << "Не удалось открыть файл с ключом!";
         exit(1);
     }
-    for (int i; i<bits.size; i++) {
-        if (bits[i] != '0' && bits[i] != '1') {
-            cout << "Ключ содержит недопустимые символы!";
-        }
-    }
     string bits;
     file >> bits;
+    for (int i; i<bits.size(); i++) {
+        if (bits[i] != '0' && bits[i] != '1') {
+            cout << "Ключ содержит недопустимые символы!";
+            exit(1);
+        }
+    }
     //ключ в файле должен быть строго равен 8 бит, по этому проверка
-    if (bits.size() != 8) {
-        cout << "Ключ должен быть 8 бит!";
+    if (bits.size() % 8 != 0 && bits.size() != 0) {
+        cout << "Длина ключа должна быть кратна 8 бит!";
         exit(1);
     }
     file.close();
