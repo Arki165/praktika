@@ -6,6 +6,58 @@
 
 using namespace std;
 
+// Функция вывода справки (меню помощи)
+void printHelp() {
+    cout << "========================================================================\n";
+    cout << "                    ПРОГРАММА ШИФРОВАНИЯ ФАЙЛОВ                         \n";
+    cout << "========================================================================\n";
+    cout << "Использование: <cipher.exe | ./cipher> -in <файл> -out <результат> -method <метод> -key... \n\n";
+    
+    cout << "МЕТОДЫ ШИФРОВАНИЯ (-method):\n";
+    cout << "  xor   : Классическое побитовое сложение по модулю 2\n";
+    cout << "  xnor  : Логическая эквивалентность (обратный XOR)\n\n";
+
+    cout << "Справка по способам задания ключа:\n";
+    cout << "  -keyval    ключ вручную\n";
+    cout << "  -keyfile   ключ из файла\n";
+    cout << "  -keyauto   автогенерация ключа на весь файл\n";
+    cout << "  -keyblock  автогенерация ключа заданной длины\n\n";
+    cout << "Подробнее:\n";
+    cout << "<Программа> -help <название метода(key...)>\n";
+}
+
+//функция подробной справки по способам ввода ключа
+void printDetHelp(const string& topic) {
+    if (topic == "keyval") {
+        cout << "--- Ввод ключа вручную ---\n";
+        cout << "Флаг: -keyval <ключ>\n";
+        cout << "Ключ — любая строка, шифрует текст блоками циклично.\n";
+        cout << "Пример: <Программа> -in a.txt -out b.txt -method xor  -keyval 1010\n";
+    }
+    else if (topic == "keyfile") {
+        cout << "--- Ключ из файла ---\n";
+        cout << "Флаг: -keyfile <путь_к_файлу>\n";
+        cout << "В файле должна быть строка из 0 и 1, длина кратна 8.\n";
+        cout << "Пример: <Программа> -in a.txt -out b.txt -method xnor -keyfile key.txt\n";
+    }
+    else if (topic == "keyauto") {
+        cout << "--- Автоключ на весь файл (Шифр Вернама) ---\n";
+        cout << "Флаг: -keyauto <куда_сохранить_ключ>\n";
+        cout << "Генерирует случайный ключ длиной равной размеру файла.\n";
+        cout << "Пример: <Программа> -in a.txt -out b.txt -method xor -keyauto my_key.txt\n";
+    }
+    else if (topic == "keyblock") {
+        cout << "--- Блочный ключ заданной длины ---\n";
+        cout << "Флаг: -keyblock <длина_в_битах> <куда_сохранить_ключ>\n";
+        cout << "Длина должна быть кратна 8. Генерируется случайный ключ.\n";
+        cout << "Пример: <Программа> -in a.txt -out b.txt -method xnor -keyblock 40 block.txt\n";
+    }
+    else {
+        cout << "Неизвестная тема справки: " << topic << "\n";
+        cout << "Доступные темы: keyval, keyfile, keyauto, keyblock\n";
+    }
+}
+
 //функция чтения текстового файла
 string readFile(const string& path) {
     ifstream file(path, ios::binary); //открываем файлы в бинарном режиме, 
@@ -30,7 +82,7 @@ string readKey(const string& path) {
     }
     string bits;
     file >> bits;
-    for (int i; i<bits.size(); i++) {
+    for (int i = 0; i<bits.size(); i++) {
         if (bits[i] != '0' && bits[i] != '1') {
             cout << "Ключ содержит недопустимые символы!";
             exit(1);
@@ -46,7 +98,7 @@ string readKey(const string& path) {
 }
 
 //функция записи в файл
-void writeFile(const string& path, const string& data){
+void writeFile(const string& path, const string& data) {
     ofstream file(path, ios::binary); //аналогично, только с записью
     if (!file.is_open()){
         cout << "Не удалось создать файл для сохранения!";
